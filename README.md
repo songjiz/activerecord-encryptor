@@ -2,7 +2,7 @@
 
 Native encrypted attributes for ActiveRecord with ActiveSupport::MessageEncryptor.
 
-**But do not support search by the unencrypted value.** 🙂
+**But do not support search by the unencrypted value.** 👓
 
 ## Installation
 
