@@ -14,21 +14,17 @@ module ActiveRecord
         :encrypted
       end
 
-      def deserialize(value)
-        return nil if value.nil?
-
-        encryptor.decrypt_and_verify value
-      rescue ActiveSupport::MessageEncryptor::InvalidMessage
-        value
-      end
-
       def serialize(value)
-        return nil if value.nil?
-
-        encryptor.encrypt_and_sign value
+        value && encryptor.encrypt_and_sign(value)
       end
 
       private
+        def cast_value(value)
+          encryptor.decrypt_and_verify(value)
+        rescue ActiveSupport::MessageEncryptor::InvalidMessage
+          value
+        end
+
         def encryptor
           @encryptor ||= build_encryptor
         end
