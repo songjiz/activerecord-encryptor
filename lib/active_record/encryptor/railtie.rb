@@ -8,7 +8,7 @@ module ActiveRecord
         end
       end
 
-      initializer "active_record.type.register_encrypted" do  
+      initializer "active_record.register_encrypted_type" do  
         ActiveSupport.on_load(:active_record) do
           require "active_record/type/encrypted"
 

@@ -65,7 +65,7 @@ class User < ApplicationRecord
                  cipher: 'aes-256-cbc',
                  digest: 'SHA256',
                  rotations: [
-                   { secret: User.encryptor_secret, cipher: 'aes-256-gcm', digest: 'SHA1' }
+                   { secret: encryptor_secret, cipher: 'aes-256-gcm', digest: 'SHA1' }
                  ]
 end
 

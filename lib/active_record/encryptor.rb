@@ -16,7 +16,7 @@ module ActiveRecord
     module ClassMethods
       def attr_encryptor(*attributes)
         options = attributes.extract_options!
-        options.assert_valid_keys(:secret, :salt, :cipher, :digest, :rotations)
+        options.assert_valid_keys(:secret, :cipher, :digest, :rotations)
 
         options[:secret] ||= encryptor_secret
         
