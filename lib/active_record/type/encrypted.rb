@@ -21,7 +21,7 @@ module ActiveRecord
       private
         def cast_value(value)
           encryptor.decrypt_and_verify(value)
-        rescue ActiveSupport::MessageEncryptor::InvalidMessage
+        rescue ActiveSupport::MessageEncryptor::InvalidMessage, ActiveSupport::MessageVerifier::InvalidSignature
           value
         end
 
@@ -35,10 +35,11 @@ module ActiveRecord
 
         def build_encryptor
           ActiveSupport::MessageEncryptor.new(resolve_secret(secret), cipher: cipher, digest: digest).tap do |encryptor|
-            Array[rotations].flatten.reject(&:blank?).each do |rotator_options|
-              rotator_options.assert_valid_keys(:secret, :cipher, :digest)
-
-              old_secret = resolve_secret(rotator_options.delete(:secret))
+            Array[rotations].flatten.reject(&:blank?).each do |options|
+              options.assert_valid_keys(:secret, :cipher, :digest)
+              
+              old_secret      = resolve_secret(options[:secret])
+              rotator_options = options.except(:secret)
 
               if old_secret.present?
                 encryptor.rotate(old_secret, **rotator_options)
