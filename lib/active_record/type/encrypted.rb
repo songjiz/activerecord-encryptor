@@ -15,7 +15,9 @@ module ActiveRecord
       end
 
       def serialize(value)
-        value && encryptor.encrypt_and_sign(value)
+        if !value.nil?
+          encryptor.encrypt_and_sign(value)
+        end
       end
 
       private
@@ -37,7 +39,7 @@ module ActiveRecord
           ActiveSupport::MessageEncryptor.new(resolve_secret(secret), cipher: cipher, digest: digest).tap do |encryptor|
             Array[rotations].flatten.reject(&:blank?).each do |options|
               options.assert_valid_keys(:secret, :cipher, :digest)
-              
+
               old_secret      = resolve_secret(options[:secret])
               rotator_options = options.except(:secret)
 
