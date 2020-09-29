@@ -25,5 +25,4 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "activerecord", ">= 5.0.0"
-  spec.add_development_dependency "rails", ">= 5.0.0"
 end
