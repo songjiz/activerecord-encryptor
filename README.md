@@ -9,12 +9,16 @@ Native encrypted attributes for ActiveRecord with ActiveSupport::MessageEncrypto
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activerecord-encryptor', github: 'https://github.com/songjiz/activerecord-encryptor'
+gem 'activerecord-encryptor'
 ```
 
 And then execute:
 
     $ bundle install
+
+Or install it yourself as:
+
+    $ gem install activerecord-encryptor
 
 ## Usage
 
