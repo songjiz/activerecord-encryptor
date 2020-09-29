@@ -18,10 +18,6 @@ module ActiveRecord
 
         attributes.each do |name|
           attribute name.to_sym, :encryption, **options
-
-          define_method :"encrypted_#{name}" do
-            send :"#{name}_before_type_cast"
-          end
         end
       end
     end
