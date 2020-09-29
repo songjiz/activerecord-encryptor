@@ -22,7 +22,7 @@ module ActiveRecord
 
       private
         def cast_value(value)
-          encryptor.decrypt_and_verify(value)
+          encryptor.decrypt_and_verify(value.to_s)
         rescue ActiveSupport::MessageEncryptor::InvalidMessage, ActiveSupport::MessageVerifier::InvalidSignature
           value
         end
