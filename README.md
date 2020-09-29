@@ -38,29 +38,32 @@ end
 
 ```ruby
 user = User.new
-user.pub_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqvSdexJ11MpnL3IuFZo9d16VXpjSCqnsHusjmHLPslYCeOpAR5i166d
-NpJKp0Mw94QeIoquoSd9eF5P0pYJvDts543FHdzIipQlkGijsuwoRna8u/2BoYljYoNc5bfxArYTviIoGuPh2z2GsPQY266fsGsq3ebuR6hpmJU1H6AfE4v2AIYnMh/
-xA28qpZ1Yn6i4U4HSeaL6VpaVPlIyatVRD1QmQHHnENFnzR0uT3LMl9b8jLHmgHagRuppFycX4O5lh/d76+Dz9VlwMYKEaYRmUIpCtePff3CPZoBnwopz9PQ6mEsqx2
-e3RfiRKUbSvtdBf+30fGmFXKNUY93 sandbox"
+user.pub_key = "ruby"
 
 user.save
+#  (0.1ms)  begin transaction
+#  User Update (0.4ms)  UPDATE "users" SET "pub_key" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["pub_key", "UjlTT0xWWkVoSXVTekYvR3ZuQjVJZz09LS1jMjJqL2JlRUl5UlFhcFVLSk5JNVZ3PT0=--8a0629d448118e61cc8d21f643ae4875f8fc929319c31f5a3b30fdf7f0920f62"], ["updated_at", "2020-09-29 10:54:42.067929"], ["id", 1]]
+#  (2.2ms)  commit transaction
+#  => true
+
 user.reload
-user.pub_key # => "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqvSdexJ11MpnL3IuFZo9d16VXpjSCqnsHusjmHLPslYCeOpAR5i166d
-NpJKp0Mw94QeIoquoSd9eF5P0pYJvDts543FHdzIipQlkGijsuwoRna8u/2BoYljYoNc5bfxArYTviIoGuPh2z2GsPQY266fsGsq3ebuR6hpmJU1H6AfE4v2AIYnMh/
-xA28qpZ1Yn6i4U4HSeaL6VpaVPlIyatVRD1QmQHHnENFnzR0uT3LMl9b8jLHmgHagRuppFycX4O5lh/d76+Dz9VlwMYKEaYRmUIpCtePff3CPZoBnwopz9PQ6mEsqx2
-e3RfiRKUbSvtdBf+30fGmFXKNUY93 sandbox"
+user.pub_key # => "ruby"
 
 user.pub_key = nil
 user.save
+#   (0.1ms)  begin transaction
+#   User Update (0.4ms)  UPDATE "users" SET "pub_key" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["pub_key", nil], ["updated_at", "2020-09-29 10:56:10.167344"], ["id", 1]]
+#   (2.4ms)  commit transaction
+#  => true
 user.reload
 user.pub_key # => nil
 
-user.pub_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqvSdexJ11MpnL3IuFZo9d16VXpjSCqnsHusjmHLPslYCeOpAR5i166d
-NpJKp0Mw94QeIoquoSd9eF5P0pYJvDts543FHdzIipQlkGijsuwoRna8u/2BoYljYoNc5bfxArYTviIoGuPh2z2GsPQY266fsGsq3ebuR6hpmJU1H6AfE4v2AIYnMh/
-xA28qpZ1Yn6i4U4HSeaL6VpaVPlIyatVRD1QmQHHnENFnzR0uT3LMl9b8jLHmgHagRuppFycX4O5lh/d76+Dz9VlwMYKEaYRmUIpCtePff3CPZoBnwopz9PQ6mEsqx2
-e3RfiRKUbSvtdBf+30fGmFXKNUY93 sandbox"
+user.pub_key = "rails"
 user.save
-user.reload
+#   (0.1ms)  begin transaction
+#   User Update (0.4ms)  UPDATE "users" SET "pub_key" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["pub_key", "RGM4eC9USE80bDk3N1BrSUdOaDZUZz09LS1VT016ckhHUVJUbVdsSncyNkRMNEd3PT0=--988267203a47d39ef991af785f3d381bbc10afe1dd92de3244d8eba1acf34697"], ["updated_at", "2020-09-29 10:58:54.283360"], ["id", 1]]
+#   (2.6ms)  commit transaction
+# => true
 ```
 
 ```ruby
@@ -75,10 +78,7 @@ class User < ApplicationRecord
 end
 
 user = User.find(1)
-user.pub_key # => "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqvSdexJ11MpnL3IuFZo9d16VXpjSCqnsHusjmHLPslYCeOpAR5i166d
-NpJKp0Mw94QeIoquoSd9eF5P0pYJvDts543FHdzIipQlkGijsuwoRna8u/2BoYljYoNc5bfxArYTviIoGuPh2z2GsPQY266fsGsq3ebuR6hpmJU1H6AfE4v2AIYnMh/
-xA28qpZ1Yn6i4U4HSeaL6VpaVPlIyatVRD1QmQHHnENFnzR0uT3LMl9b8jLHmgHagRuppFycX4O5lh/d76+Dz9VlwMYKEaYRmUIpCtePff3CPZoBnwopz9PQ6mEsqx2
-e3RfiRKUbSvtdBf+30fGmFXKNUY93 sandbox"
+user.pub_key # => "rails"
 ```
 
 ## TODO
