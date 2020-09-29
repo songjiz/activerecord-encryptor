@@ -1,6 +1,6 @@
 module ActiveRecord
   module Type
-    class Encrypted < ActiveModel::Type::Value
+    class Encryption < ActiveModel::Type::Value
       attr_reader :secret, :cipher, :digest, :rotations
 
       def initialize(secret:, cipher: nil, digest: nil, rotations: nil)
@@ -11,13 +11,13 @@ module ActiveRecord
       end
 
       def type
-        :encrypted
+        :encryption
       end
 
       def serialize(value)
-        if !value.nil?
-          encryptor.encrypt_and_sign(value)
-        end
+        return if value.nil?
+
+        encryptor.encrypt_and_sign(value)
       end
 
       private
@@ -40,13 +40,12 @@ module ActiveRecord
             Array[rotations].flatten.reject(&:blank?).each do |options|
               options.assert_valid_keys(:secret, :cipher, :digest)
 
-              old_secret      = resolve_secret(options[:secret])
-              rotator_options = options.except(:secret)
+              old_secret = resolve_secret(options.delete(:secret))
 
               if old_secret.present?
-                encryptor.rotate(old_secret, **rotator_options)
+                encryptor.rotate(old_secret, **options)
               else
-                encryptor.rotate **rotator_options
+                encryptor.rotate **options
               end
             end
           end

@@ -8,11 +8,11 @@ module ActiveRecord
         end
       end
 
-      initializer "active_record.register_encrypted_type" do
+      initializer "active_record.register_encryption_type" do
         ActiveSupport.on_load(:active_record) do
-          require "active_record/type/encrypted"
+          require "active_record/type/encryption"
 
-          ActiveRecord::Type.register(:encrypted, ActiveRecord::Type::Encrypted, override: false)
+          ActiveRecord::Type.register(:encryption, ActiveRecord::Type::Encryption, override: false)
         end
       end
 

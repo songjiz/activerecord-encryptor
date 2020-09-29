@@ -17,7 +17,7 @@ module ActiveRecord
         options[:secret] ||= encryptor_secret
 
         attributes.each do |name|
-          attribute name.to_sym, :encrypted, **options
+          attribute name.to_sym, :encryption, **options
 
           define_method :"encrypted_#{name}" do
             send :"#{name}_before_type_cast"
