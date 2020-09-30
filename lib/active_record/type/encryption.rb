@@ -43,9 +43,9 @@ module ActiveRecord
               old_secret = resolve_secret(options.delete(:secret))
 
               if old_secret.present?
-                encryptor.rotate(old_secret, **options)
+                encryptor.rotate old_secret, cipher: options[:cipher], digest: options[:digest]
               else
-                encryptor.rotate **options
+                encryptor.rotate cipher: options[:cipher], digest: options[:digest]
               end
             end
           end
