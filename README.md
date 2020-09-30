@@ -1,6 +1,10 @@
 # ActiveRecord::Encryptor
 
-Encrypt and decrypt attributes of ActiveRecord with ActiveSupport::MessageEncryptor.
+[![Build Status](https://travis-ci.com/songjiz/activerecord-encryptor.svg?branch=master)](https://travis-ci.com/songjiz/activerecord-encryptor)
+
+Native encrypted attributes for ActiveRecord with ActiveSupport::MessageEncryptor.
+
+**But do not support search by the unencrypted value.** 👓
 
 ## Installation
 
@@ -21,11 +25,10 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-ActiveRecord::Schema.define(version: 2020_09_15_154433) do
+ActiveRecord::Schema.define(version: 2020_09_16_154202) do
 
   create_table "users", force: :cascade do |t|
-    t.string "otp_secret"
-    t.string "ssn"
+    t.text "pub_key"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -35,47 +38,54 @@ end
 
 ```ruby
 class User < ApplicationRecord
-  attr_encryptor :otp_secret, :ssn
+  attr_encryptor :pub_key
 end
 ```
 
 ```ruby
 user = User.new
-user.otp_secret = '123456'
-user.encrypted_otp_secret # => "123456"
-user.ssn = '1111111111'
-user.encrypted_ssn # => "1111111111"
-user.save
-user.id # => 1
-user.encrypted_otp_secret # => "z+IRtCMvMtr567eQ+0NfRg==--jPDcBZ7C46B5I83U--ZXz8LcM/g2ZTyyI2aBj1Qw=="
-user.encrypted_ssn # => "colDFyYK8JtZ9s6gtskzdEhdUCA=--kSEtVv1sl2u9IAXx--djE1hGAgSSRQbXcUpOUN3g=="
+user.pub_key = "ruby"
 
-user.otp_secret = nil
-user.encrypted_otp_secret # => nil
 user.save
-user.encrypted_otp_secret # => nil
+#  (0.1ms)  begin transaction
+#  User Update (0.4ms)  UPDATE "users" SET "pub_key" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["pub_key", "UjlTT0xWWkVoSXVTekYvR3ZuQjVJZz09LS1jMjJqL2JlRUl5UlFhcFVLSk5JNVZ3PT0=--8a0629d448118e61cc8d21f643ae4875f8fc929319c31f5a3b30fdf7f0920f62"], ["updated_at", "2020-09-29 10:54:42.067929"], ["id", 1]]
+#  (2.2ms)  commit transaction
+#  => true
+
+user.reload
+user.pub_key # => "ruby"
+
+user.pub_key = nil
+user.save
+#   (0.1ms)  begin transaction
+#   User Update (0.4ms)  UPDATE "users" SET "pub_key" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["pub_key", nil], ["updated_at", "2020-09-29 10:56:10.167344"], ["id", 1]]
+#   (2.4ms)  commit transaction
+#  => true
+user.reload
+user.pub_key # => nil
+
+user.pub_key = "rails"
+user.save
+#   (0.1ms)  begin transaction
+#   User Update (0.4ms)  UPDATE "users" SET "pub_key" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["pub_key", "RGM4eC9USE80bDk3N1BrSUdOaDZUZz09LS1VT016ckhHUVJUbVdsSncyNkRMNEd3PT0=--988267203a47d39ef991af785f3d381bbc10afe1dd92de3244d8eba1acf34697"], ["updated_at", "2020-09-29 10:58:54.283360"], ["id", 1]]
+#   (2.6ms)  commit transaction
+# => true
 ```
 
 ```ruby
 class User < ApplicationRecord
-  attr_encryptor :otp_secret
-
-  attr_encryptor :ssn,
-                 secret: Rails.application.key_generator.generate_key('user/ssn', ActiveSupport::MessageEncryptor.key_len),
+  attr_encryptor :pub_key,
+                 secret: Rails.application.key_generator.generate_key('user/pub_key', ActiveSupport::MessageEncryptor.key_len),
                  cipher: 'aes-256-cbc',
                  digest: 'SHA256',
                  rotations: [
-                   { secret: User.encryptor_secret, cipher: 'aes-256-gcm', digest: 'SHA1' }
+                   { secret: encryptor_secret, cipher: 'aes-256-gcm', digest: 'SHA1' }
                  ]
 end
 
 user = User.find(1)
-user.ssn # => "1111111111"
+user.pub_key # => "rails"
 ```
-
-## TODO
-
-- [ ] Complete test cases
 
 ## Development
 

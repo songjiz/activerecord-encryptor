@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["zsj"]
   spec.email         = ["lekyzsj@gmail.com"]
 
-  spec.summary       = %q{Encrypt ActiveRecord attributes.}
-  spec.description   = %q{Encrypt ActiveRecord attributes.}
+  spec.summary       = %q{Native encrypted attributes for ActiveRecord.}
+  spec.description   = %q{Native encrypted attributes for ActiveRecord.}
   spec.homepage      = "https://github.com/songjiz/activerecord-encryptor"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
@@ -24,6 +24,6 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "activerecord", ">= 5.0.0"
-  spec.add_development_dependency "rails", ">= 5.0.0"
+  spec.add_runtime_dependency "activerecord", ">= 5.2.4.3"
+  spec.add_development_dependency "sqlite3"
 end

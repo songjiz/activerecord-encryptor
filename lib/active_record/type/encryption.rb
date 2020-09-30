@@ -1,6 +1,6 @@
 module ActiveRecord
   module Type
-    class Encrypted < ActiveModel::Type::Value
+    class Encryption < ActiveModel::Type::Value
       attr_reader :secret, :cipher, :digest, :rotations
 
       def initialize(secret:, cipher: nil, digest: nil, rotations: nil)
@@ -11,24 +11,22 @@ module ActiveRecord
       end
 
       def type
-        :encrypted
-      end
-
-      def deserialize(value)
-        return nil if value.nil?
-
-        encryptor.decrypt_and_verify value
-      rescue ActiveSupport::MessageEncryptor::InvalidMessage
-        value
+        :encryption
       end
 
       def serialize(value)
-        return nil if value.nil?
+        return if value.nil?
 
-        encryptor.encrypt_and_sign value
+        encryptor.encrypt_and_sign(value)
       end
 
       private
+        def cast_value(value)
+          encryptor.decrypt_and_verify(value.to_s)
+        rescue ActiveSupport::MessageEncryptor::InvalidMessage, ActiveSupport::MessageVerifier::InvalidSignature
+          value
+        end
+
         def encryptor
           @encryptor ||= build_encryptor
         end
@@ -39,15 +37,15 @@ module ActiveRecord
 
         def build_encryptor
           ActiveSupport::MessageEncryptor.new(resolve_secret(secret), cipher: cipher, digest: digest).tap do |encryptor|
-            Array[rotations].flatten.reject(&:blank?).each do |rotator_options|
-              rotator_options.assert_valid_keys(:secret, :cipher, :digest)
+            Array[rotations].flatten.reject(&:blank?).each do |options|
+              options.assert_valid_keys(:secret, :cipher, :digest)
 
-              old_secret = resolve_secret(rotator_options.delete(:secret))
+              old_secret = resolve_secret(options.delete(:secret))
 
               if old_secret.present?
-                encryptor.rotate(old_secret, **rotator_options)
+                encryptor.rotate(old_secret, **options)
               else
-                encryptor.rotate **rotator_options
+                encryptor.rotate **options
               end
             end
           end
