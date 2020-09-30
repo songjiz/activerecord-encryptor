@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "activerecord", ">= 5.2.4.3"
+  spec.add_development_dependency "sqlite3"
 end

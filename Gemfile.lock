@@ -23,6 +23,7 @@ GEM
       concurrent-ruby (~> 1.0)
     minitest (5.14.2)
     rake (12.3.3)
+    sqlite3 (1.4.2)
     thread_safe (0.3.6)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
@@ -35,6 +36,7 @@ DEPENDENCIES
   activerecord-encryptor!
   minitest (~> 5.0)
   rake (~> 12.0)
+  sqlite3
 
 BUNDLED WITH
    2.1.4
