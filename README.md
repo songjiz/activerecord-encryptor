@@ -38,7 +38,7 @@ end
 
 ```ruby
 class User < ApplicationRecord
-  attr_encryptor :pub_key
+  encrypted_attribute :pub_key
 end
 ```
 
@@ -74,7 +74,7 @@ user.save
 
 ```ruby
 class User < ApplicationRecord
-  attr_encryptor :pub_key,
+  encrypted_attribute :pub_key,
                  secret: Rails.application.key_generator.generate_key('user/pub_key', ActiveSupport::MessageEncryptor.key_len),
                  cipher: 'aes-256-cbc',
                  digest: 'SHA256',

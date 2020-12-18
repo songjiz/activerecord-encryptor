@@ -30,7 +30,7 @@ class ActiveRecord::EncryptorTest < Minitest::Test
 
   def test_set_options
     User.class_eval do
-      attr_encryptor :pub_key,
+      encrypted_attribute :pub_key, :text,
                      cipher: 'aes-256-cbc',
                      digest: 'SHA256',
                      rotations: [ { cipher: 'aes-256-gcm', digest: 'SHA1' } ]
@@ -43,7 +43,7 @@ class ActiveRecord::EncryptorTest < Minitest::Test
 
   def test_rotations
     User.class_eval do
-      attr_encryptor :pub_key, secret: encryption_secrets[:old]
+      encrypted_attribute :pub_key, :text, secret: encryption_secrets[:old]
     end
     @user.pub_key = 'pub_key'
     @user.save
@@ -51,15 +51,16 @@ class ActiveRecord::EncryptorTest < Minitest::Test
     refute_equal @user.pub_key, encrypted_attribute(@user, :pub_key)
 
     User.class_eval do
-      attr_encryptor :pub_key, secret: encryption_secrets[:new]
+      encrypted_attribute :pub_key, :text, secret: encryption_secrets[:new]
     end
     @user = User.find(@user.id)
     # can't decrypt the pub_key then return the raw value
-    refute_equal @user.pub_key, 'pub_key'
-    assert_equal @user.pub_key, encrypted_attribute(@user, :pub_key)
+    assert_raises(ActiveSupport::MessageVerifier::InvalidSignature) do
+      @user.pub_key
+    end
 
     User.class_eval do
-      attr_encryptor :pub_key, secret: encryption_secrets[:new], rotations: [ { secret: encryption_secrets[:old] }]
+      encrypted_attribute :pub_key, :text, secret: encryption_secrets[:new], rotations: [ { secret: encryption_secrets[:old] }]
     end
     @user = User.find(@user.id)
     assert_equal @user.pub_key, 'pub_key'

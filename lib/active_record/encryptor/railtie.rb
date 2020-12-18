@@ -16,9 +16,10 @@ module ActiveRecord
         end
       end
 
-      initializer "active_record.set_encryptor_secret" do
-        ActiveSupport.on_load(:active_record) do
-          self.encryptor_secret ||= -> { Rails.application.key_generator.generate_key("active_record/encryptor", ActiveSupport::MessageEncryptor.key_len) }
+      initializer "active_record.set_encryptor_secret" do |app|
+        ActiveSupport.on_load(:after_initialize) do
+          ActiveRecord::Base.encryptor_secret = app.config.active_record.encryptor_secret
+          ActiveRecord::Base.encryptor_secret ||= -> { Rails.application.key_generator.generate_key("active_record/encryptor", ActiveSupport::MessageEncryptor.key_len) }
         end
       end
     end

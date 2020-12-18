@@ -33,7 +33,7 @@ end
 ApplicationRecord.encryptor_secret = ApplicationRecord.encryption_secrets[:default]
 
 class User < ApplicationRecord
-  attr_encryptor :pub_key
+  encrypted_attribute :pub_key, :text
 end
 
 def encrypted_attribute(model, name)

@@ -10,15 +10,10 @@ module ActiveRecord
     end
 
     module ClassMethods
-      def attr_encryptor(*attributes)
-        options = attributes.extract_options!
-        options.assert_valid_keys(:secret, :cipher, :digest, :rotations)
+      def encrypted_attribute(name, type, secret: nil, cipher: nil, digest: nil, rotations: nil, **options)
+        secret ||= encryptor_secret
 
-        options[:secret] ||= encryptor_secret
-
-        attributes.each do |name|
-          attribute name.to_sym, :encryption, **options
-        end
+        attribute name.to_sym, :encryption, subtype: type, secret: secret, cipher: cipher, digest: digest, rotations: rotations, **options
       end
     end
   end
