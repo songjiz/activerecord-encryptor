@@ -1,16 +1,16 @@
 module ActiveRecord
   module Type
     class Encryption < ActiveModel::Type::Value
-      
+
       attr_reader :secret, :cipher, :digest, :rotations
       delegate :cast, to: :subtype
 
       def initialize(subtype:, secret:, cipher: nil, digest: nil, rotations: nil, **options)
-        @secret = secret
-        @cipher = cipher
-        @digest = digest
+        @secret    = secret
+        @cipher    = cipher
+        @digest    = digest
         @rotations = rotations
-        @subtype = ActiveRecord::Type.lookup(subtype, **options)
+        @subtype   = ActiveRecord::Type.lookup(subtype, **options)
         @encryptor = build_encryptor
       end
 
@@ -23,11 +23,10 @@ module ActiveRecord
       end
 
       def deserialize(value)
-        deserialized = subtype.deserialize(value)
+        return if value.nil?
 
-        return if deserialized.nil?
-
-        encryptor.decrypt_and_verify(deserialized)
+        unencrypted = encryptor.decrypt_and_verify(value)
+        subtype.deserialize(unencrypted)
       end
 
       def changed_in_place?(raw_old_value, value)
