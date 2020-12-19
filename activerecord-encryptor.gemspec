@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["zsj"]
   spec.email         = ["lekyzsj@gmail.com"]
 
-  spec.summary       = %q{Native encrypted attributes for ActiveRecord.}
-  spec.description   = %q{Native encrypted attributes for ActiveRecord.}
+  spec.summary       = %q{ActiveRecord attributes encryption.}
+  spec.description   = %q{ActiveRecord attributes encryption.}
   spec.homepage      = "https://github.com/songjiz/activerecord-encryptor"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
