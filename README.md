@@ -2,9 +2,7 @@
 
 [![Build Status](https://travis-ci.com/songjiz/activerecord-encryptor.svg?branch=master)](https://travis-ci.com/songjiz/activerecord-encryptor)
 
-Native encrypted attributes for ActiveRecord with ActiveSupport::MessageEncryptor.
-
-**But do not support search by the unencrypted value.** 👓
+Encrypt attributes with ActiveSupport::MessageEncryptor and ActiveRecord::Attributes API.
 
 ## Installation
 
