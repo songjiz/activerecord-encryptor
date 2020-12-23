@@ -1,5 +1,4 @@
 require "active_record"
-require "active_record/encryptor/version"
 
 module ActiveRecord
   module EncryptedAttributes
