@@ -6,7 +6,7 @@ require "securerandom"
 require "sqlite3"
 require "minitest/autorun"
 
-ActiveRecord::Base.send :include, ActiveRecord::Encryptor
+ActiveRecord::Base.send :include, ActiveRecord::EncryptedAttributes
 ActiveRecord::Type.register(:encryption, ActiveRecord::Type::Encryption, override: false)
 
 ActiveRecord::Base.establish_connection(

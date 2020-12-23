@@ -64,5 +64,5 @@ class ActiveRecord::EncryptorTest < Minitest::Test
     end
     @user = User.find(@user.id)
     assert_equal @user.pub_key, 'pub_key'
-  end    
+  end
 end
