@@ -1,6 +1,6 @@
 module ActiveRecord
   module Type
-    class Encryption < ActiveModel::Type::Value
+    class Encrypted < ActiveModel::Type::Value
 
       attr_reader :secret, :cipher, :digest, :rotations
       delegate :cast, to: :subtype
@@ -15,18 +15,19 @@ module ActiveRecord
       end
 
       def serialize(value)
-        serialized = subtype.serialize(value)
-
-        return if serialized.nil?
-
-        encryptor.encrypt_and_sign(serialized)
+        subtype.serialize(value).yield_self do |serialized|
+          unless serialized.nil?
+            encryptor.encrypt_and_sign(serialized)
+          end
+        end
       end
 
       def deserialize(value)
         return if value.nil?
 
-        unencrypted = encryptor.decrypt_and_verify(value)
-        subtype.deserialize(unencrypted)
+        encryptor.decrypt_and_verify(value).yield_self do |decrypted|
+          subtype.deserialize(decrypted)
+        end
       end
 
       def changed_in_place?(raw_old_value, value)

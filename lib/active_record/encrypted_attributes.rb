@@ -12,7 +12,7 @@ module ActiveRecord
       def encrypted_attribute(name, type, secret: nil, cipher: nil, digest: nil, rotations: nil, **options)
         secret ||= encryptor_secret
 
-        attribute name.to_sym, :encryption, subtype: type, secret: secret, cipher: cipher, digest: digest, rotations: rotations, **options
+        attribute name.to_sym, :encrypted, subtype: type, secret: secret, cipher: cipher, digest: digest, rotations: rotations, **options
       end
     end
   end

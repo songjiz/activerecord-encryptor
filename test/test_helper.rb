@@ -1,12 +1,12 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "active_record/encryptor"
-require "active_record/type/encryption"
+require "active_record/type/encrypted"
 require "securerandom"
 require "sqlite3"
 require "minitest/autorun"
 
 ActiveRecord::Base.send :include, ActiveRecord::EncryptedAttributes
-ActiveRecord::Type.register(:encryption, ActiveRecord::Type::Encryption, override: false)
+ActiveRecord::Type.register(:encrypted, ActiveRecord::Type::Encrypted, override: false)
 
 ActiveRecord::Base.establish_connection(
   adapter: 'sqlite3',

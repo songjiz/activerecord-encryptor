@@ -9,7 +9,7 @@ Encrypt attributes with ActiveSupport::MessageEncryptor and ActiveRecord::Attrib
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activerecord-encryptor'
+gem 'activerecord-encryptor', github: 'https://github.com/songjiz/activerecord-encryptor'
 ```
 
 And then execute:
